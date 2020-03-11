@@ -22,6 +22,8 @@
 (with-eval-after-load 'evil-maps
   (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
   (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+(require 'evil-magit)
+(evil-ex-define-cmd "gg" 'magit-status)
 
 
 ;; auto-completion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
