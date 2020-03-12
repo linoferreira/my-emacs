@@ -4,27 +4,27 @@ This is my basic Emacs init file configuration.
 
 This config makes use of the following packages, listed here by category:
 
-  **Package management:**
-    - use-package
+**Package management:**
+  - use-package
   
-  **Code completion:**
-    - ivy
-    - company-mode
+**Code completion:**
+  - ivy
+  - company-mode
 
-  **Language support:**
-    - ess (for R)
-    - auctex
-    - markdown
+**Language support:**
+  - ess (for R)
+  - auctex
+  - markdown
 
-  **Tools:**
-    - magit
+**Tools:**
+  - magit
 
-  **Aesthetics:**
-    - fill-column-indicator
-    - all-the-icons
-    - doom-themes
-    - doom-modeline
-    - treemacs
+**Aesthetics:**
+  - fill-column-indicator
+  - all-the-icons
+  - doom-themes
+  - doom-modeline
+  - treemacs
 
 ### Installation
 
