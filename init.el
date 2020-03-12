@@ -1,4 +1,4 @@
-;; package set up ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; package set up
 ;; MELPA repo
 (require 'package)
 (add-to-list 'package-archives
@@ -10,23 +10,13 @@
   (require 'use-package))
 
 
-;; support for languages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; support for languages
 ;; R
-(use-package ess)
+(use-package ess
+  :defer t)
 
 
-;; key bindings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; evil-mode
-(require 'evil)
-(evil-mode 1)
-(with-eval-after-load 'evil-maps
-  (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
-  (define-key evil-motion-state-map (kbd ";") 'evil-ex))
-(require 'evil-magit)
-(evil-ex-define-cmd "gg" 'magit-status)
-
-
-;; auto-completion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; auto-completion
 ;; company-mode (in-buffer completion)
 (add-hook 'after-init-hook 'global-company-mode)
 
@@ -34,7 +24,7 @@
 (ivy-mode 1)
 
 
-;; aesthetics ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; aesthetics
 ;; disable task bar and menu
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -45,8 +35,7 @@
 ;; (global-display-fill-column-indicator-mode)  -- for Emacs 27
 
 ;; file tree
-(require 'neotree)
-(global-set-key [f8] 'neotree-toggle)
+(use-package treemacs)
 
 ;; font
 (set-frame-font (font-spec :family "Fira Code" :size 16))
@@ -63,8 +52,9 @@
   (load-theme 'doom-one t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -72,7 +62,21 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
+;; key bindings
+(global-set-key (kbd "C-x g") 'magit-status)  ; magit
 
-;; set file to store customise options ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; set file to store customise options
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+
+;; key bindings
+;; evil-mode
+;;(require 'evil)
+;;(evil-mode 1)
+;;(with-eval-after-load 'evil-maps
+;;  (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
+;;  (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+;;(require 'evil-magit)
+;;(evil-ex-define-cmd "gg" 'magit-status)
