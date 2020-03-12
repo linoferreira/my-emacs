@@ -40,3 +40,6 @@ Having done this, restart Emacs and install the packages using ``M-x package ins
 
 Note that, after installing the ``all-the-icons`` pack you should also install the fonts included in the package by running ``M-x all-the-icons-install-fonts
 ``. Finally, I use the [Fira Code font](https://github.com/tonsky/FiraCode), a monospaced font with ligatures, which must also be installed in your system.
+
+### Screenshot
+![screenshot](screenshot.png)
