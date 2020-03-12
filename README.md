@@ -1,30 +1,35 @@
-This is my basic Emacs init file configuration. 
+This repo contains my basic Emacs init file configuration.
 
 ### Packages
 
-This config makes use of the following packages, listed here by category:
+It makes use of the following packages, listed here by category:
 
-**Package management:**
-  - use-package
-  
-**Code completion:**
-  - ivy
-  - company-mode
+  - **Code completion:**
+    - [ivy](https://github.com/abo-abo/swiper) (general completion)
+    - [company-mode](https://company-mode.github.io/) (standard in-buffer drop-down completion)
 
-**Language support:**
-  - ess (for R)
-  - auctex
-  - markdown
 
-**Tools:**
-  - magit
+  - **Language support:**
+    - [ess](https://ess.r-project.org/) (for R)
+    - [auctex](https://www.gnu.org/software/auctex/) (for LaTeX)
+    - [markdown](https://jblevins.org/projects/markdown-mode/) (for Markdown)
 
-**Aesthetics:**
-  - fill-column-indicator
-  - all-the-icons
-  - doom-themes
-  - doom-modeline
-  - treemacs
+
+  - **Tools:**
+    - [magit](https://magit.vc/) (for Git)
+
+
+  - **Aesthetics:**
+    - [fill-column-indicator](https://www.emacswiki.org/emacs/FillColumnIndicator) (will no longer be needed with Emacs 27) (vertical ruler at 80 char)
+    - [all-the-icons](https://github.com/domtronn/all-the-icons.el) (icons)
+    - [doom-themes](https://github.com/hlissner/emacs-doom-themes) (main theme)
+    - [doom-modeline](https://github.com/seagle0128/doom-modeline) (mode line)
+    - [treemacs](https://github.com/Alexander-Miller/treemacs) (tree file browser)
+
+
+  - **Misc:**
+    - [use-package](https://github.com/jwiegley/use-package) (improves the init file package configuration)
+	
 
 ### Installation
 
@@ -40,6 +45,7 @@ Having done this, restart Emacs and install the packages using ``M-x package ins
 
 Note that, after installing the ``all-the-icons`` pack you should also install the fonts included in the package by running ``M-x all-the-icons-install-fonts
 ``. Finally, I use the [Fira Code font](https://github.com/tonsky/FiraCode), a monospaced font with ligatures, which must also be installed in your system.
+
 
 ### Screenshot
 ![screenshot](screenshot.png)
