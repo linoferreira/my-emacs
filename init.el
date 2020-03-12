@@ -24,7 +24,7 @@
 ;; company-mode (in-buffer completion)
 (add-hook 'after-init-hook 'global-company-mode)
 
-;; ivy (mini-buffer completion)
+;; ivy
 (ivy-mode 1)
 
 
@@ -73,14 +73,3 @@
 ;; set file to store customise options
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
-
-
-;; key bindings
-;; evil-mode
-;;(require 'evil)
-;;(evil-mode 1)
-;;(with-eval-after-load 'evil-maps
-;;  (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
-;;  (define-key evil-motion-state-map (kbd ";") 'evil-ex))
-;;(require 'evil-magit)
-;;(evil-ex-define-cmd "gg" 'magit-status)
