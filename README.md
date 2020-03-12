@@ -33,7 +33,7 @@ It makes use of the following packages, listed here by category:
 
 ### Installation
 
-Begin by installing all the packages above. The easiest way to do that is probably to use the MELPA package repository, adding the following lines to your Emacs init file:
+Begin by installing all the packages above. A simple way to do that is to use the MELPA package repository, adding the following lines to your Emacs init file:
 ```
 (require 'package)
 (add-to-list 'package-archives
@@ -43,8 +43,8 @@ Begin by installing all the packages above. The easiest way to do that is probab
 
 Having done this, restart Emacs and install the packages using ``M-x package install RET 'package name`` . 
 
-Note that, after installing the ``all-the-icons`` pack you should also install the fonts included in the package by running ``M-x all-the-icons-install-fonts
-``. Finally, I use the [Fira Code font](https://github.com/tonsky/FiraCode), a monospaced font with ligatures, which must also be installed in your system.
+Note that after installing the ``all-the-icons`` pack you should also install the fonts included in the package by running ``M-x all-the-icons-install-fonts
+``. Finally, you must also install [Fira Code font](https://github.com/tonsky/FiraCode), a monospaced font with ligatures, on your system.
 
 
 ### Screenshot
