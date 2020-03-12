@@ -66,6 +66,7 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
+
 ;; key bindings
 (global-set-key (kbd "C-x g") 'magit-status)  ; magit
 
