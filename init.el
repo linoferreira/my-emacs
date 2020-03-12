@@ -15,6 +15,10 @@
 (use-package ess
   :defer t)
 
+;; markdown
+(use-package markdown-mode
+  :defer t)
+
 
 ;; auto-completion
 ;; company-mode (in-buffer completion)
@@ -30,7 +34,7 @@
 (menu-bar-mode -1)
 
 ;; 80 char ruler
-(require 'fill-column-indicator)
+(use-package fill-column-indicator)
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 ;; (global-display-fill-column-indicator-mode)  -- for Emacs 27
 
