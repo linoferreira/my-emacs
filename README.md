@@ -1,15 +1,15 @@
 # A simple, modern-looking Emacs config
 
-This is a simple Emacs init file which aims to be short and easily understandable. It sets up Emacs to look like a modern text editor (with a dark theme and new icons, mode line and font) and adds some IDE-like functionality (code completion with a drop-down menu and a tree file explorer). It also installs modes for coding in R and Markdown and sets some additional options (ruler at 80 characters, a mode for git and a new location for saving Emacs' backup files (the automatically created ones that start with `~`).
+This is a simple Emacs init file which aims to be short and easily understandable. It sets up Emacs to look like a modern text editor (with a dark theme and new icons, mode line and font) and adds some IDE-like functionality (code completion with a drop-down menu and a tree file explorer). It also installs modes for coding in R and Markdown and sets some additional options (ruler at 80 characters, a mode for git and a new location for saving Emacs' backup files (the automatically created ones that start with `~`)).
 
-My aim in building this configuration was to see how much set up was needed to get Emacs to look and act (in the ways I find most helpful) like a modern editor such as Atom or Sublime. As you can see by looking at my `init.el` file, a new theme, font and a few other packages are all that is needed.
+My aim in building this configuration was to see how much set up was needed to get Emacs to look and act (in the ways I find most helpful) like a modern editor such as Atom or Sublime. As you can see by looking at this `init.el` file, a new theme, font and a few other packages are all that is needed.
 
-Finally, there is an option to use Vim keybindings through [evil](https://github.com/emacs-evil/evil). This is not enabled by default but can be turned on by uncommenting the relevant lines at the end of the init file.
+There is an option to use Vim keybindings through [evil](https://github.com/emacs-evil/evil). This is not enabled by default but can be turned on by uncommenting the relevant lines at the end of the init file.
 
 
 ### Packages
 
-This config makes use of the following packages, listed here by category:
+This configuration uses the following packages, listed here by category:
 
   - **Code completion:**
     - [ivy](https://github.com/abo-abo/swiper) (general completion)
