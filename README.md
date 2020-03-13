@@ -1,8 +1,15 @@
-This repo contains my basic Emacs init file configuration.
+# A simple, modern-looking Emacs config
+
+This is a simple Emacs init file which aims to be short and easily understandable. It sets up Emacs to look like a modern text editor (with a dark theme and new icons, mode line and font) and adds some IDE-like functionality (code completion with a drop-down menu and a tree file explorer). It also installs modes for coding in R and Markdown and sets some additional options (ruler at 80 characters, a mode for git and a new location for saving Emacs' backup files (the automatically created ones that start with `~`).
+
+My aim in building this configuration was to see how much set up was needed to get Emacs to look and act (in the ways I find most helpful) like a modern editor such as Atom or Sublime. As you can see by looking at my `init.el` file, a new theme, font and a few other packages are all that is needed.
+
+Finally, there is an option to use Vim keybindings through [evil](https://github.com/emacs-evil/evil). This is not enabled by default but can be turned on by uncommenting the relevant lines at the end of the init file.
+
 
 ### Packages
 
-It makes use of the following packages, listed here by category:
+This config makes use of the following packages, listed here by category:
 
   - **Code completion:**
     - [ivy](https://github.com/abo-abo/swiper) (general completion)
@@ -11,7 +18,6 @@ It makes use of the following packages, listed here by category:
 
   - **Language support:**
     - [ess](https://ess.r-project.org/) (for R)
-    - [auctex](https://www.gnu.org/software/auctex/) (for LaTeX)
     - [markdown](https://jblevins.org/projects/markdown-mode/) (for Markdown)
 
 
@@ -33,19 +39,9 @@ It makes use of the following packages, listed here by category:
 
 ### Installation
 
-Begin by installing all the packages above. A simple way to do that is to use the MELPA package repository, adding the following lines to your Emacs init file:
-```
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
-```
+Simply place the `init.el` file in your `.emacs.d` folder (in a Unix system this will be located in your home directory by default). If you already have an `init.el` file in your Emacs folder, or an equivalent `.emacs` file in your home directory, you must delete/overwrite these.
 
-Having done this, restart Emacs and install the packages using ``M-x package install RET 'package name`` . 
-
-Note that after installing the ``all-the-icons`` pack you should also install the fonts included in the package by running ``M-x all-the-icons-install-fonts
-``. Finally, you must also install [Fira Code font](https://github.com/tonsky/FiraCode), a monospaced font with ligatures, on your system.
-
+Note that to use the [Fira Code font](https://github.com/tonsky/FiraCode), a monospaced font with ligatures, you must install it on your system in a separate step.
 
 ### Screenshot
 ![screenshot](screenshot.png)
