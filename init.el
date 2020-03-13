@@ -49,6 +49,10 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+;; font (set font to Fira Code if it is available)
+(when (member "Fira Code" (font-family-list))
+  (set-frame-font (font-spec :family "Fira Code" :size 16)))
+
 ;; 80 char ruler
 (use-package fill-column-indicator
   :ensure t)
@@ -59,14 +63,11 @@
 (use-package treemacs
   :ensure t)
 
-;; font (set font to Fira Code if it is available)
-(when (member "Fira Code" (font-family-list))
-  (set-frame-font (font-spec :family "Fira Code" :size 16)))
-
 ;; icons
 (use-package all-the-icons
   :ensure t)
-;; (requires fonts to be installed manually, see GitHub)
+(unless (member "all-the-icons" (font-family-list))
+  (all-the-icons-install-fonts t))
 
 ;; doom theme
 (use-package doom-themes
