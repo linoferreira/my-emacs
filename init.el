@@ -45,13 +45,22 @@
 
 
 ;; aesthetics ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; disable start-up screen
+(setq inhibit-startup-screen t)
+
 ;; disable task bar and menu
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
-;; font (set font to Fira Code if it is available)
+;; fonts
+;; default mono font
 (when (member "Fira Code" (font-family-list))
-  (set-frame-font (font-spec :family "Fira Code" :size 16)))
+  (custom-set-faces
+   '(default ((t (:weight normal :height 120 :family "Fira Code"))))))
+;; default variable-width font (for org-mode, etc)
+(when (member "Source Sans Pro" (font-family-list))
+  (custom-set-faces
+   '(variable-pitch ((t (:weight normal :height 140 :family "Source Sans Pro"))))))
 
 ;; 80 char ruler
 (use-package fill-column-indicator
@@ -123,6 +132,25 @@
 (unless (package-installed-p `magit)
   (package-install `magit))
 (global-set-key (kbd "C-x g") 'magit-status)  ; `C-x g` - check status
+
+;; org-mode
+(setq org-hide-emphasis-markers t)  ; hide emphasis markers
+(use-package org-bullets  ; UTF-8 bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(add-hook 'org-mode-hook 'variable-pitch-mode)  ; set default font
+;; code blocks, etc in fixed-width font
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+;; enable indenting by default
+(add-hook 'org-mode-hook
+          (lambda ()
+            (org-indent-mode)))
 
 ;; set file to store customise options (create it if it doesn't exist)
 (unless (file-exists-p "~/.emacs.d/custom.el")
