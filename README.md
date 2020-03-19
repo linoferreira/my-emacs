@@ -31,11 +31,10 @@ This configuration uses the following packages, listed here by category:
     - [doom-themes](https://github.com/hlissner/emacs-doom-themes) (main theme)
     - [doom-modeline](https://github.com/seagle0128/doom-modeline) (mode line)
     - [treemacs](https://github.com/Alexander-Miller/treemacs) (tree file browser)
-
+    - [org-bullets](https://github.com/sabof/org-bullets) (shows `org-mode` bullets as UTF-8 characters)
 
   - **Misc:**
     - [use-package](https://github.com/jwiegley/use-package) (improves the init file package configuration)
-    - [org-bullets](https://github.com/sabof/org-bullets) (shows `org-mode` bullets as UTF-8 characters)
 	
 
 ### Installation
