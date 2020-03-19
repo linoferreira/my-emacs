@@ -35,13 +35,14 @@ This configuration uses the following packages, listed here by category:
 
   - **Misc:**
     - [use-package](https://github.com/jwiegley/use-package) (improves the init file package configuration)
+    - [org-bullets](https://github.com/sabof/org-bullets) (shows `org-mode` bullets as UTF-8 characters)
 	
 
 ### Installation
 
 Simply place the `init.el` file in your `.emacs.d` folder (in a Unix system this will be located in your home directory by default). If you already have an `init.el` file in your Emacs folder, or an equivalent `.emacs` file in your home directory, you must delete/overwrite these.
 
-Note that to use the [Fira Code font](https://github.com/tonsky/FiraCode), a monospaced font with ligatures, you must install it on your system in a separate step.
+Note that to use the [Fira Code font](https://github.com/tonsky/FiraCode) for code and [Source Sans Pro](https://fonts.google.com/specimen/Source+Sans+Pro) for `org-mode` text you must install them on your system in a separate step.
 
 ### Screenshot
 ![screenshot](screenshot.png)
