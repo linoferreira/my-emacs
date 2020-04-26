@@ -48,9 +48,10 @@
 ;; disable start-up screen
 (setq inhibit-startup-screen t)
 
-;; disable task bar and menu
+;; disable toolbar, menu bar and scroll bar
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(toggle-scroll-bar -1) 
 
 ;; fonts
 ;; default mono font
@@ -68,9 +69,52 @@
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 ;; (global-display-fill-column-indicator-mode)  -- for Emacs 27
 
+(put 'dired-find-alternate-file 'disabled nil)
+
 ;; file tree (toggle with `M-x treemacs`)
-(use-package treemacs
-  :ensure t)
+;; (use-package treemacs
+;;   :ensure t)
+
+;; sidebar
+;; (use-package dash
+;;   :ensure t)
+;; (use-package dash-functional
+;;   :ensure t)
+;; (use-package s
+;;   :ensure t)
+;; (use-package ov
+;;   :ensure t)
+;; (use-package projectile
+;;   :ensure t)
+;; (use-package frame-local
+;;   :ensure t)
+
+;; (add-to-list 'load-path "~/.emacs.d/font-lock-plus/")
+;; (require 'font-lock+)
+
+;; (add-to-list 'load-path "~/.local/share/icons-in-terminal/")
+;; (add-to-list 'load-path "~/.emacs.d/sidebar/")
+;; (require 'sidebar)
+;; (global-set-key (kbd "C-x C-f") 'sidebar-open)
+;; (global-set-key (kbd "C-x C-a") 'sidebar-buffers-open)
+
+;; (use-package dired-sidebar
+;;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+;;   :ensure t
+;;   :commands (dired-sidebar-toggle-sidebar)
+;;   :init
+;;   (add-hook 'dired-sidebar-mode-hook
+;;             (lambda ()
+;;               (unless (file-remote-p default-directory)
+;;                 (auto-revert-mode))))
+;;   :config
+;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+;;   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+;;   (setq dired-sidebar-subtree-line-prefix "__")
+;;   (setq dired-sidebar-theme 'vscode)
+;;   (setq dired-sidebar-use-term-integration t)
+;;   (setq dired-sidebar-use-custom-font t))
 
 ;; icons
 (use-package all-the-icons
@@ -85,7 +129,7 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+    (load-theme 'doom-one t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; or for treemacs users
@@ -104,6 +148,11 @@
 ;; support for languages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; R
 (use-package ess
+  :ensure t
+  :defer t)
+
+;; LaTeX
+(use-package auctex
   :ensure t
   :defer t)
 
@@ -129,8 +178,8 @@
 
 ;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; git
-(unless (package-installed-p `magit)
-  (package-install `magit))
+(unless (package-installed-p 'magit)
+  (package-install 'magit))
 (global-set-key (kbd "C-x g") 'magit-status)  ; `C-x g` - check status
 
 ;; org-mode
@@ -151,6 +200,8 @@
 (add-hook 'org-mode-hook
           (lambda ()
             (org-indent-mode)))
+;; LaTeX preview
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
 ;; set file to store customise options (create it if it doesn't exist)
 (unless (file-exists-p "~/.emacs.d/custom.el")
@@ -164,6 +215,24 @@
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups/")))
 
 ;; vim-style keybindings
-;; (if you wish to use evil-mode, uncomment the lines below)
-;; (require 'evil)
-;; (evil-mode 1)
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1)
+  (setq-default evil-cross-lines t)
+  (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line))
+
+
+;; which-key
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode)
+  (setq which-key-allow-evil-operators t)
+)
+
+;; highlight matching parentheses
+(show-paren-mode 1)
