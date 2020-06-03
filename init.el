@@ -1,4 +1,4 @@
-;;; A simple, modern-looking Emacs config
+;;; A basic modern-looking Emacs config
 ;;; Lino Ferreira
 
 ;;
