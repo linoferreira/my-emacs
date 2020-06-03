@@ -1,4 +1,4 @@
-# A simple, modern-looking Emacs config
+# Just another Emacs config
 
 This is a simple Emacs init file which aims to be short and easily understandable. It sets up Emacs to look like a modern text editor (with a dark theme and new icons, mode line and font) and adds some IDE-like functionality (code completion with a drop-down menu and a tree file explorer). It also installs modes for coding in R, LaTeX and Markdown and sets some additional options (a package for git and a new location for saving Emacs' backup files (the automatically created ones that start with `~`)).
 
