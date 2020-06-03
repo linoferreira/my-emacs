@@ -185,7 +185,6 @@
   (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line))
 
-
 ;; which-key
 (use-package which-key
   :ensure t
