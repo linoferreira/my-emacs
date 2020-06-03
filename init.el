@@ -1,4 +1,4 @@
-;;; A basic modern-looking Emacs config
+;;; A basic, modern-looking Emacs config
 ;;; Lino Ferreira
 
 ;;
@@ -70,11 +70,11 @@
 ;; (add-hook 'after-change-major-mode-hook 'fci-mode)
 ;; (global-display-fill-column-indicator-mode)  -- for Emacs 27
 
-(put 'dired-find-alternate-file 'disabled nil)
-
 ;; file tree (toggle with `M-x treemacs`)
-;; (use-package treemacs
-;;   :ensure t)
+(use-package treemacs
+  :ensure t)
+(use-package treemacs-evil
+  :ensure t)
 
 ;; icons
 (use-package all-the-icons
@@ -137,10 +137,23 @@
 
 
 ;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; vim-style keybindings
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1)
+  (setq-default evil-cross-lines t)
+  (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line))
+
 ;; git
 (unless (package-installed-p 'magit)
   (package-install 'magit))
 (global-set-key (kbd "C-x g") 'magit-status)  ; `C-x g` - check status
+;; (use-package evil-magit
+;;   :ensure t)
 
 ;; org-mode
 (setq org-hide-emphasis-markers t)  ; hide emphasis markers
@@ -173,17 +186,6 @@
 (unless (file-exists-p "~/.emacs.d/backups/")
   (make-directory "~/.emacs.d/backups/" t))
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups/")))
-
-;; vim-style keybindings
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1)
-  (setq-default evil-cross-lines t)
-  (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
-  (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
-  (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line))
 
 ;; which-key
 (use-package which-key
