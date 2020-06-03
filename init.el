@@ -20,6 +20,7 @@
 ;;  - doom-themes
 ;;  - doom-mode-line
 ;;  - ess
+;;  - auctex
 ;;  - markdown-mode
 ;;  - company
 ;;  - ivy
