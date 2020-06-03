@@ -6,13 +6,13 @@
 ;; understandable. It sets up Emacs to look like a modern text editor
 ;; (with a dark theme and new icons, mode line and font) and adds some
 ;; IDE-like functionality (code completion with a drop-down menu and a
-;; tree file explorer). It also installs modes for coding in R and
-;; Markdown and sets some additional options (ruler at 80 char, etc.).
+;; tree file explorer). It also installs modes for coding in R, LaTeX 
+;; and Markdown and sets some additional options.
 ;;
 ;; To use this config, place the init file in your '.emacs.d/' folder.
 ;;
 ;; When you first run Emacs, it will install the following packages
-;; if they are not already available:
+;; if they are not already installed:
 ;;  - use-package
 ;;  - fill-column-indicator
 ;;  - treemacs
