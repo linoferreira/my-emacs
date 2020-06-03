@@ -76,47 +76,6 @@
 ;; (use-package treemacs
 ;;   :ensure t)
 
-;; sidebar
-;; (use-package dash
-;;   :ensure t)
-;; (use-package dash-functional
-;;   :ensure t)
-;; (use-package s
-;;   :ensure t)
-;; (use-package ov
-;;   :ensure t)
-;; (use-package projectile
-;;   :ensure t)
-;; (use-package frame-local
-;;   :ensure t)
-
-;; (add-to-list 'load-path "~/.emacs.d/font-lock-plus/")
-;; (require 'font-lock+)
-
-;; (add-to-list 'load-path "~/.local/share/icons-in-terminal/")
-;; (add-to-list 'load-path "~/.emacs.d/sidebar/")
-;; (require 'sidebar)
-;; (global-set-key (kbd "C-x C-f") 'sidebar-open)
-;; (global-set-key (kbd "C-x C-a") 'sidebar-buffers-open)
-
-;; (use-package dired-sidebar
-;;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-;;   :ensure t
-;;   :commands (dired-sidebar-toggle-sidebar)
-;;   :init
-;;   (add-hook 'dired-sidebar-mode-hook
-;;             (lambda ()
-;;               (unless (file-remote-p default-directory)
-;;                 (auto-revert-mode))))
-;;   :config
-;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-;;   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-;;   (setq dired-sidebar-subtree-line-prefix "__")
-;;   (setq dired-sidebar-theme 'vscode)
-;;   (setq dired-sidebar-use-term-integration t)
-;;   (setq dired-sidebar-use-custom-font t))
-
 ;; icons
 (use-package all-the-icons
   :ensure t)
