@@ -65,9 +65,9 @@
    '(variable-pitch ((t (:weight normal :height 140 :family "Source Sans Pro"))))))
 
 ;; 80 char ruler
-(use-package fill-column-indicator
-  :ensure t)
-(add-hook 'after-change-major-mode-hook 'fci-mode)
+;; (use-package fill-column-indicator
+;;   :ensure t)
+;; (add-hook 'after-change-major-mode-hook 'fci-mode)
 ;; (global-display-fill-column-indicator-mode)  -- for Emacs 27
 
 (put 'dired-find-alternate-file 'disabled nil)
