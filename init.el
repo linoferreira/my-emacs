@@ -32,7 +32,7 @@
 ;; MELPA repo to download packages from
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+             '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 ;; use-package to simplify package loading
@@ -137,7 +137,7 @@
 
 
 ;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; vim-style keybindings
+;; evil-mode: vim-style keybindings
 (use-package evil
   :ensure t
   :config
@@ -152,8 +152,8 @@
 (unless (package-installed-p 'magit)
   (package-install 'magit))
 (global-set-key (kbd "C-x g") 'magit-status)  ; `C-x g` - check status
-;; (use-package evil-magit
-;;   :ensure t)
+(use-package evil-magit
+  :ensure t)
 
 ;; org-mode
 (setq org-hide-emphasis-markers t)  ; hide emphasis markers
