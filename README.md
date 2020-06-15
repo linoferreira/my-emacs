@@ -32,8 +32,8 @@ This configuration uses the following packages, listed here by category:
 
   - **Misc:**
     - [use-package](https://github.com/jwiegley/use-package) (improves the init file package configuration)
-  - [Magit](https://magit.vc/) (for Git)
-  - [Evil](https://github.com/emacs-evil/evil) and [evil-magit](https://github.com/emacs-evil/evil-magit) (Vim-style keybindings)
+	- [Magit](https://magit.vc/) (for Git)
+	- [Evil](https://github.com/emacs-evil/evil) and [evil-magit](https://github.com/emacs-evil/evil-magit) (Vim-style keybindings)
 
 	
 
