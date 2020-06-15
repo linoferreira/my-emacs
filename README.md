@@ -37,7 +37,7 @@ This configuration uses the following packages, listed here by category:
 
 	
 
-### Installation
+### Installation (for UNIX systems)
 
 Simply place the `init.el` file in your `.emacs.d` folder (in a Unix system this will be located in your home directory by default). If you already have an `init.el` file in your Emacs folder, or an equivalent `.emacs` file in your home directory, you must delete/overwrite these.
 
