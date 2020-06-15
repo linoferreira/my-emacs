@@ -14,16 +14,13 @@ This configuration uses the following packages, listed here by category:
   - **Code completion:**
     - [Ivy](https://github.com/abo-abo/swiper) (general completion)
     - [Company](https://company-mode.github.io/) (standard in-buffer drop-down completion)
+	- [which-key](https://github.com/justbur/emacs-which-key) (shows available bindings in a popup)
 
 
   - **Language support:**
     - [ESS](https://ess.r-project.org/) (for R)
 	- [AUCTeX](https://www.gnu.org/software/auctex/) (for LaTeX)
     - [Markdown](https://jblevins.org/projects/markdown-mode/) (for Markdown)
-
-
-  - **Tools:**
-    - [Magit](https://magit.vc/) (for Git)
 
 
   - **Aesthetics:**
@@ -35,6 +32,9 @@ This configuration uses the following packages, listed here by category:
 
   - **Misc:**
     - [use-package](https://github.com/jwiegley/use-package) (improves the init file package configuration)
+  - [Magit](https://magit.vc/) (for Git)
+  - [Evil](https://github.com/emacs-evil/evil) and [evil-magit](https://github.com/emacs-evil/evil-magit) (Vim-style keybindings)
+
 	
 
 ### Installation
