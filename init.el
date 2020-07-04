@@ -1,4 +1,4 @@
-;; package set up
+;; package set up ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MELPA repo to download packages from
 (require 'package)
 (add-to-list 'package-archives
@@ -6,7 +6,6 @@
 (package-initialize)
 
 ;; use-package to simplify package loading
-;; (install if not yet installed, then load)
 (unless (package-installed-p `use-package)
   (package-refresh-contents)
   (package-install `use-package))
@@ -16,17 +15,9 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; uncomment to update packages
-;; (use-package auto-package-update
-;;   :config
-;;   (setq auto-package-update-delete-old-versions t)
-;;   (setq auto-package-update-hide-results t)
-;;   (auto-package-update-maybe))
 
 
-
-
-;; aesthetics ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; aesthetics ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; disable start-up screen
 (setq inhibit-startup-screen t)
 ;; disable toolbar, menu bar and scroll bar
@@ -66,21 +57,10 @@
 ;; mode line
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
-  :config
-  (setq column-number-mode t))
-
-;; ;; tabs
-;; (use-package centaur-tabs
-;;   :demand
-;;   :config
-;;   (centaur-tabs-mode t)
-;;   :bind
-;;   ("C-<prior>" . centaur-tabs-backward)
-;;   ("C-<next>" . centaur-tabs-forward))
+  :config (setq column-number-mode t))
 
 ;; minimap
 (use-package minimap)
-
 
 
 
@@ -88,15 +68,12 @@
 ;; R
 (use-package ess
   :defer t)
-
 ;; LaTeX
 (use-package auctex
   :defer t)
-
 ;; markdown
 (use-package markdown-mode
   :defer t)
-
 
 
 
@@ -105,29 +82,25 @@
 (unless (package-installed-p `company)
   (package-install `company))
 (add-hook 'after-init-hook 'global-company-mode)
+(use-package company-auctex)
+(use-package company-bibtex)
 
 ;; ivy (general completion of Emacs commands)
-(unless (package-installed-p `ivy)
-  (package-install `ivy))
+(use-package ivy)
 (ivy-mode 1)
-
-;; ;; swiper 
-;; (use-package swiper)
 
 ;; avy (jump to any location on page)
 (use-package avy
-  :bind
-  ("C-;" . avy-goto-char))
-
+  :bind ("C-;" . avy-goto-char))
 
 
 
 ;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; evil mode (vim keybindings)
 (use-package evil
-  :config
-  (evil-mode 1)
-  (setq-default evil-cross-lines t)
+  :config (evil-mode 1)
+  (setq-default evil-cross-lines t)  ;; cross to previous/next line when at start/end
+  ;; behave like normally with visual-line-mode lines
   (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
   (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
@@ -139,8 +112,7 @@
 
 ;; git
 (use-package magit
-  :bind
-  ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status))
 (use-package evil-magit)
 
 ;; which-key
@@ -149,13 +121,20 @@
   (which-key-mode)
   (setq which-key-allow-evil-operators t))
 
-;; ;; ido flexible searching
-;; (setq ido-enable-flex-matching t)
-;; (setq ido-everywhere t)
-;; (ido-mode 1)
-
 ;; highlight matching parentheses
-(show-paren-mode 1)
+;; (show-paren-mode 1)  ;; this is an Emacs function that highlights matching parentheses
+;; see https://notabug.org/stefano-m/.emacs.d/src/84a0a380d943ebe1627b5f63fb4d5aec681ae81d/init.d/parens.cfg.el
+;; for smartparens-config
+(use-package smartparens-config
+  :ensure smartparens
+  :init
+  (add-hook 'minibuffer-setup-hook #'turn-on-smartparens-strict-mode)
+  :config
+  (show-smartparens-global-mode t)
+  (smartparens-global-mode t)
+  (sp-use-smartparens-bindings)
+  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
+  :diminish smartparens-mode)
 
 ;; set file to store customise options (create it if it doesn't exist)
 (unless (file-exists-p "~/.emacs.d/custom.el")
@@ -167,6 +146,9 @@
   (make-directory "~/.emacs.d/backups/" t))
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups/")))
 
+;; terminal
+;; see https://github.com/akermu/emacs-libvterm for OS dependencies
+(use-package vterm)
 
 
 
@@ -276,12 +258,25 @@
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
 
+;; org-roam-server (for visualising graph as webpage)
+(use-package org-roam-server
+  :config
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8080
+        org-roam-server-export-inline-images t
+        org-roam-server-authenticate nil
+        org-roam-server-network-poll t
+        org-roam-server-network-arrows nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20))
+
 ;; org-roam-bibtex
 (use-package org-roam-bibtex
   :after org-roam
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :bind (:map org-mode-map
-         (("C-c n a" . orb-note-actions))))
+              (("C-c n a" . orb-note-actions))))
 
 ;; Deft
 (use-package deft
@@ -293,3 +288,34 @@
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
   (deft-directory "~/MEGA/org-roam/"))
+
+
+
+
+;; ;; tabs
+;; (use-package centaur-tabs
+;;   :demand
+;;   :config
+;;   (centaur-tabs-mode t)
+;;   :bind
+;;   ("C-<prior>" . centaur-tabs-backward)
+;;   ("C-<next>" . centaur-tabs-forward))
+
+;; ;; ido flexible searching
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-everywhere t)
+;; (ido-mode 1)
+
+;; ;; this was meant to allow clicking on the nodes to open the file in emacs
+;; (require 'org-roam-protocol)
+;; (defvar op-file "~/.local/share/applications/org-protocol.desktop")
+;; (if (not (file-exists-p op-file))
+;;     (write-region
+;; "[Desktop Entry]
+;; Name=Org-Protocol
+;; Exec=emacsclient %u
+;; Icon=emacs-icon
+;; Type=Application
+;; Terminal=false
+;; MimeType=x-scheme-handler/org-protocol"
+;;      "" op-file))
