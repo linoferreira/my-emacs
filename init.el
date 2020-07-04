@@ -288,34 +288,3 @@
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
   (deft-directory "~/MEGA/org-roam/"))
-
-
-
-
-;; ;; tabs
-;; (use-package centaur-tabs
-;;   :demand
-;;   :config
-;;   (centaur-tabs-mode t)
-;;   :bind
-;;   ("C-<prior>" . centaur-tabs-backward)
-;;   ("C-<next>" . centaur-tabs-forward))
-
-;; ;; ido flexible searching
-;; (setq ido-enable-flex-matching t)
-;; (setq ido-everywhere t)
-;; (ido-mode 1)
-
-;; ;; this was meant to allow clicking on the nodes to open the file in emacs
-;; (require 'org-roam-protocol)
-;; (defvar op-file "~/.local/share/applications/org-protocol.desktop")
-;; (if (not (file-exists-p op-file))
-;;     (write-region
-;; "[Desktop Entry]
-;; Name=Org-Protocol
-;; Exec=emacsclient %u
-;; Icon=emacs-icon
-;; Type=Application
-;; Terminal=false
-;; MimeType=x-scheme-handler/org-protocol"
-;;      "" op-file))
