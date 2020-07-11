@@ -44,16 +44,12 @@
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-solarized-light t)
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+        doom-themes-enable-italic t  ; if nil, italics is universally disabled
+	doom-themes-treemacs-theme "doom-colors")  ; use the colorful treemacs theme
+  (load-theme 'doom-solarized-light t)  ; theme
+  (doom-themes-visual-bell-config)      ; enable flashing mode-line on errors
   (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
+  (doom-themes-org-config))  ; corrects (and improves) org-mode's native fontification
 ;; mode line
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
@@ -68,10 +64,13 @@
 ;; R
 (use-package ess
   :defer t)
+
 ;; LaTeX
 (use-package auctex
-  :defer t)
-;; markdown
+  :defer t
+  :hook (LaTeX-mode . visual-line-mode))
+
+;; Markdown
 (use-package markdown-mode
   :defer t)
 
@@ -79,15 +78,14 @@
 
 ;; auto-completion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company-mode (in-buffer code completion)
-(unless (package-installed-p `company)
-  (package-install `company))
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package company
+  :init (global-company-mode t))
 (use-package company-auctex)
 (use-package company-bibtex)
 
 ;; ivy (general completion of Emacs commands)
-(use-package ivy)
-(ivy-mode 1)
+(use-package ivy
+  :init (ivy-mode 1))
 
 ;; avy (jump to any location on page)
 (use-package avy
@@ -110,19 +108,19 @@
 (use-package treemacs)
 (use-package treemacs-evil)
 
-;; git
+;; git integration
 (use-package magit
   :bind ("C-x g" . magit-status))
 (use-package evil-magit)
 
-;; which-key
+;; which-key (display available shortcuts)
 (use-package which-key
   :config
   (which-key-mode)
   (setq which-key-allow-evil-operators t))
 
 ;; highlight matching parentheses
-;; (show-paren-mode 1)  ;; this is an Emacs function that highlights matching parentheses
+;; (show-paren-mode 1)  ; this is an Emacs function that highlights matching parentheses
 ;; see https://notabug.org/stefano-m/.emacs.d/src/84a0a380d943ebe1627b5f63fb4d5aec681ae81d/init.d/parens.cfg.el
 ;; for smartparens-config
 (use-package smartparens-config
@@ -146,33 +144,9 @@
   (make-directory "~/.emacs.d/backups/" t))
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups/")))
 
-;; terminal
+;; terminal emulator
 ;; see https://github.com/akermu/emacs-libvterm for OS dependencies
 (use-package vterm)
-
-
-
-;; reference management ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package ivy-bibtex
-  :config
-  (setq bibtex-completion-bibliography '("~/MEGA/gms/library/zotero.bib")
-	;; bibtex-completion-library-path '("~/MEGA/gms/library/pdfs/")
-	bibtex-completion-pdf-field "file"
-	bibtex-completion-notes-path "~/MEGA/gms/library/notes/"
-        bibtex-completion-pdf-open-function  ;; open PDFs with system viewer
-	(lambda (fpath)
-	    (call-process "evince" nil 0 nil fpath))))
-
-(use-package org-ref
-  :config
-  (setq org-ref-completion-library 'org-ref-ivy-cite
-	org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-ivy-bibtex
-	reftex-default-bibliography '("~/MEGA/gms/library/zotero.bib")
-	;; org-ref-bibliography-notes "~/MEGA/gms/library/notes/"
-	org-ref-default-bibliography '("~/MEGA/gms/library/zotero.bib")
-	org-ref-notes-directory "~/MEGA/org-roam/"
-        org-ref-notes-function 'orb-edit-notes))
-	;; org-ref-pdf-directory "~/MEGA/gms/library/pdfs/"))
 
 
 
@@ -187,17 +161,11 @@
   :bind ("C-c a" . org-agenda)
   :config
   ;; set task keywords
-  (setq org-todo-keywords  
-	'((sequence "TODO(t)" "NEXT" "WAIT(w@/!)" "SOMEDAY" "|" "DONE(d!)" "CANCELLED(c@)")))
-  (setq org-todo-state-tags-triggers  ; archive items with SOMEDAY keyword
-	'(("SOMEDAY" ("ARCHIVE" . t)))) 
-  ;; org-agenda dirs 
-  (setq org-agenda-files (quote ("~/MEGA/gms/rotation-2/notes"
-				 "~/MEGA/gms/rotation-3/notes")))
-  ;; hide emphasis markers
-  (setq org-hide-emphasis-markers t)  
-  ;; LaTeX preview: increase font size
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT" "WAIT(w@/!)" "SOMEDAY" "|" "DONE(d!)" "CANCELLED(c@)"))
+  org-todo-state-tags-triggers '(("SOMEDAY" ("ARCHIVE" . t))) ; archive items with SOMEDAY keyword
+  org-agenda-files (quote ("~/MEGA/gms/rotation-2/notes" "~/MEGA/gms/rotation-3/notes"))  ; org-agenda dirs 
+  org-hide-emphasis-markers t  ; hide emphasis markers
+  org-format-latex-options (plist-put org-format-latex-options :scale 1.5))  ; LaTeX preview: increase font size
   ;; code blocks, etc in fixed-width font
   (custom-theme-set-faces
    'user
@@ -205,22 +173,21 @@
    '(org-code ((t (:inherit (shadow fixed-pitch)))))
    '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
    '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))))  
-
 ;; UTF-8 bullet points
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
 
-;; journal
+;; journal (separate from org-roam)
 (use-package org-journal
-  :bind
-  ("C-c n j" . org-journal-new-entry)
+  :defer t
+  :config
+  (setq org-journal-dir "~/MEGA/notes/journal/"
+        org-journal-date-format "%A, %d %B %Y")
   :custom
   (org-journal-date-prefix "#+TITLE: ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-dir "~/MEGA/org-roam/")
-  (org-journal-date-format "%A, %d %B %Y"))
+  (org-journal-file-format "%Y-%m-%d.org"))
 
-;; Roam
+;; org-roam (zettelkasten package inspired by Roam Research)
 (use-package org-roam
   :hook
   (after-init . org-roam-mode)
@@ -229,7 +196,7 @@
 	'(("d" "default" plain (function org-roam--capture-get-point)
      "%?"
      :file-name "${slug}"
-     :head "#+title: ${title}\n#+date: %<%Y-%m-%d>"
+     :head "#+TITLE: ${title}\n#+DATE: %<%Y-%m-%d>"
      :unnarrowed t)))
   (defun org-roam--title-to-slug (title)
     "Convert TITLE to a filename-suitable slug. Uses hyphens rather than underscores."
@@ -247,8 +214,8 @@
              (slug (-reduce-from #'cl-replace (strip-nonspacing-marks title) pairs)))
         (s-downcase slug))))
   :custom
-  (org-roam-directory "~/MEGA/org-roam")
-  ;; (org-roam-index-file "~/MEGA/org-roam/index.org")
+  (org-roam-directory "~/MEGA/notes/org-roam")
+  ;; (org-roam-index-file "~/MEGA/notes/org-roam/index.org")
   :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
@@ -257,7 +224,6 @@
                ("C-c n g" . org-roam-graph))
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
-
 ;; org-roam-server (for visualising graph as webpage)
 (use-package org-roam-server
   :config
@@ -270,15 +236,17 @@
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
-
 ;; org-roam-bibtex
 (use-package org-roam-bibtex
   :after org-roam
   :hook (org-roam-mode . org-roam-bibtex-mode)
-  :bind (:map org-mode-map
-              (("C-c n a" . orb-note-actions))))
+  :config
+  (setq orb-templates '(("r" "ref" plain (function org-roam-capture--get-point) ""
+		       :file-name "${citekey}"
+		       :head "#+TITLE: ${title}\n#+DATE: %<%Y-%m-%d>\n#+ROAM_KEY: ${ref}\n#+ROAM_TAGS: paper\n"
+		       :unnarrowed t))))
 
-;; Deft
+;; Deft (for quick searching of notes)
 (use-package deft
   :after org
   :bind
@@ -287,4 +255,26 @@
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
-  (deft-directory "~/MEGA/org-roam/"))
+  (deft-directory "~/MEGA/notes/org-roam/"))
+
+
+
+;; reference management ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ivy-bibtex (use ivy completion framework for searching references)
+(use-package ivy-bibtex
+  :config
+  (setq bibtex-completion-bibliography '("~/MEGA/gms/library/zotero.bib")
+        bibtex-completion-pdf-field "file"
+        bibtex-completion-notes-path "~/MEGA/notes/org-roam"
+        bibtex-completion-pdf-open-function  ;; open PDFs with system viewer
+	(lambda (fpath)
+	  (call-process "evince" nil 0 nil fpath))))
+  
+;; org-ref (easily add references to org files)
+(use-package org-ref
+  :config
+  (setq reftex-default-bibliography '("~/MEGA/gms/library/zotero.bib")
+	org-ref-default-bibliography '("~/MEGA/gms/library/zotero.bib")
+	org-ref-bibliography-notes "~/MEGA/notes/org-roam/"
+	org-ref-completion-library 'org-ref-ivy-bibtex
+        org-ref-notes-function 'orb-edit-notes))  ; use org-roam-bibtex
