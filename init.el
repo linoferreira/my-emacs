@@ -148,6 +148,9 @@
 ;; see https://github.com/akermu/emacs-libvterm for OS dependencies
 (use-package vterm)
 
+;; no distractions mode
+(use-package olivetti)
+
 
 
 ;; notes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -177,16 +180,6 @@
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
 
-;; journal (separate from org-roam)
-(use-package org-journal
-  :defer t
-  :config
-  (setq org-journal-dir "~/MEGA/notes/journal/"
-        org-journal-date-format "%A, %d %B %Y")
-  :custom
-  (org-journal-date-prefix "#+TITLE: ")
-  (org-journal-file-format "%Y-%m-%d.org"))
-
 ;; org-roam (zettelkasten package inspired by Roam Research)
 (use-package org-roam
   :hook
@@ -215,7 +208,6 @@
         (s-downcase slug))))
   :custom
   (org-roam-directory "~/MEGA/notes/org-roam")
-  ;; (org-roam-index-file "~/MEGA/notes/org-roam/index.org")
   :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
@@ -224,7 +216,7 @@
                ("C-c n g" . org-roam-graph))
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
-;; org-roam-server (for visualising graph as webpage)
+;; org-roam-server (for visualising graph as webpage at 127.0.0.1:8080)
 (use-package org-roam-server
   :config
   (setq org-roam-server-host "127.0.0.1"
@@ -278,3 +270,5 @@
 	org-ref-bibliography-notes "~/MEGA/notes/org-roam/"
 	org-ref-completion-library 'org-ref-ivy-bibtex
         org-ref-notes-function 'orb-edit-notes))  ; use org-roam-bibtex
+
+
