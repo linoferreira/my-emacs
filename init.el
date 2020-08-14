@@ -1,4 +1,4 @@
-;; package set up ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; package set up ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MELPA repo to download packages from
 (require 'package)
 (add-to-list 'package-archives
@@ -17,7 +17,7 @@
 
 
 
-;; aesthetics ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; aesthetics ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; disable start-up screen
 (setq inhibit-startup-screen t)
 ;; disable toolbar, menu bar and scroll bar
@@ -26,13 +26,13 @@
 (toggle-scroll-bar -1) 
 
 ;; fonts
-;; default mono font
-(when (member "Source Code Pro" (font-family-list))
-  (setq default-frame-alist '((font . "Source Code Pro-10"))))
-;; default variable-width font (for org-mode, etc)
-(when (member "Source Sans Pro" (font-family-list))
-  (custom-set-faces
-   '(variable-pitch ((t (:weight normal :height 120 :family "Source Sans Pro"))))))
+;; set default font
+(set-frame-font "Source Code Pro-10")
+;; set variable-width font
+(set-face-font 'variable-pitch "Source Sans Pro-12")
+;; choose when to use variable-width font smartly
+(use-package mixed-pitch
+  :hook (text-mode . mixed-pitch-mode))
 
 ;; icons
 (use-package all-the-icons)
@@ -42,30 +42,25 @@
 ;; theme
 (use-package doom-themes
   :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t  ; if nil, italics is universally disabled
-	doom-themes-treemacs-theme "doom-colors")  ; use the colorful treemacs theme
-  (load-theme 'doom-solarized-light t)  ; theme
-  (doom-themes-visual-bell-config)      ; enable flashing mode-line on errors
+  (load-theme 'doom-one-light t)  ; theme
+  (doom-themes-visual-bell-config)  ; enable flashing mode line on errors
+  (setq doom-themes-treemacs-theme "doom-colors")  ; use the colorful treemacs theme
   (doom-themes-treemacs-config)
-  (doom-themes-org-config))  ; corrects (and improves) org-mode's native fontification
+  (doom-themes-org-config))  ; corrects org-mode's native fontification
+ 
 ;; mode line
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :config (setq column-number-mode t))
 
-;; minimap
-(use-package minimap)
 
 
-
-;; support for languages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; support for languages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; R
 (use-package ess
   :defer t)
 
-;; LaTeX
+;; LaTeX (TODO add spell checking by default!)
 (use-package auctex
   :defer t
   :hook (LaTeX-mode . visual-line-mode))
@@ -76,8 +71,7 @@
 
 
 
-;; auto-completion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; company-mode (in-buffer code completion)
+;; auto-completion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; company-mode (in-buffer code completion)
 (use-package company
   :init (global-company-mode t))
 (use-package company-auctex)
@@ -93,7 +87,7 @@
 
 
 
-;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; evil mode (vim keybindings)
 (use-package evil
   :config (evil-mode 1)
@@ -105,7 +99,8 @@
   (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line))
 
 ;; file tree (toggle with `M-x treemacs`)
-(use-package treemacs)
+(use-package treemacs
+  :bind ("C-c t" . treemacs))
 (use-package treemacs-evil)
 
 ;; git integration
@@ -119,8 +114,7 @@
   (which-key-mode)
   (setq which-key-allow-evil-operators t))
 
-;; highlight matching parentheses
-;; (show-paren-mode 1)  ; this is an Emacs function that highlights matching parentheses
+;; highlight matching parentheses (TODO simplify this config!)
 ;; see https://notabug.org/stefano-m/.emacs.d/src/84a0a380d943ebe1627b5f63fb4d5aec681ae81d/init.d/parens.cfg.el
 ;; for smartparens-config
 (use-package smartparens-config
@@ -144,120 +138,47 @@
   (make-directory "~/.emacs.d/backups/" t))
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups/")))
 
-;; terminal emulator
-;; see https://github.com/akermu/emacs-libvterm for OS dependencies
-(use-package vterm)
-
-;; no distractions mode
-(use-package olivetti)
 
 
-
-;; notes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; notes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode
 (use-package org
   :hook
-  (org-mode . org-indent-mode)
-  (org-mode . variable-pitch-mode)
+  ;; (org-mode . org-indent-mode)
   (org-mode . visual-line-mode)
-  (org-mode . flyspell-mode)
-  :bind ("C-c a" . org-agenda)
+  ;; (org-mode . flyspell-mode)
+  (org-mode . variable-pitch-mode)
+  :bind
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture)
   :config
-  ;; set task keywords
-  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT" "WAIT(w@/!)" "SOMEDAY" "|" "DONE(d!)" "CANCELLED(c@)"))
-  org-todo-state-tags-triggers '(("SOMEDAY" ("ARCHIVE" . t))) ; archive items with SOMEDAY keyword
-  org-agenda-files (quote ("~/MEGA/gms/rotation-2/notes" "~/MEGA/gms/rotation-3/notes"))  ; org-agenda dirs 
+  (setq org-agenda-files (quote ("~/MEGA/notes"))  ; org-agenda dirs 
   org-hide-emphasis-markers t  ; hide emphasis markers
-  org-format-latex-options (plist-put org-format-latex-options :scale 1.5))  ; LaTeX preview: increase font size
-  ;; code blocks, etc in fixed-width font
-  (custom-theme-set-faces
-   'user
-   '(org-block ((t (:inherit fixed-pitch))))
-   '(org-code ((t (:inherit (shadow fixed-pitch)))))
-   '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-   '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))))  
+  org-format-latex-options (plist-put org-format-latex-options :scale 1.5)  ; LaTeX preview: increase font size
+  ;; org-capture
+  org-capture-templates
+  '(("r" "Research" entry (file+headline "~/MEGA/notes/research.org" "Capture")
+     "** %U %?\n")
+    ("p" "Personal" entry (file+headline "~/MEGA/notes/personal.org" "Capture")
+     "** %U %?\n"))))
+
 ;; UTF-8 bullet points
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
 
-;; org-roam (zettelkasten package inspired by Roam Research)
-(use-package org-roam
-  :hook
-  (after-init . org-roam-mode)
-  :config
-  (setq org-roam-capture-templates
-	'(("d" "default" plain (function org-roam--capture-get-point)
-     "%?"
-     :file-name "${slug}"
-     :head "#+TITLE: ${title}\n#+DATE: %<%Y-%m-%d>"
-     :unnarrowed t)))
-  (defun org-roam--title-to-slug (title)
-    "Convert TITLE to a filename-suitable slug. Uses hyphens rather than underscores."
-    (cl-flet* ((nonspacing-mark-p (char)
-                                  (eq 'Mn (get-char-code-property char 'general-category)))
-               (strip-nonspacing-marks (s)
-                                       (apply #'string (seq-remove #'nonspacing-mark-p
-                                                                   (ucs-normalize-NFD-string s))))
-               (cl-replace (title pair)
-                           (replace-regexp-in-string (car pair) (cdr pair) title)))
-      (let* ((pairs `(("[^[:alnum:][:digit:]]" . "-")  ;; convert anything not alphanumeric
-                      ("--*" . "-")  ;; remove sequential underscores
-                      ("^-" . "")  ;; remove starting underscore
-                      ("-$" . "")))  ;; remove ending underscore
-             (slug (-reduce-from #'cl-replace (strip-nonspacing-marks title) pairs)))
-        (s-downcase slug))))
-  :custom
-  (org-roam-directory "~/MEGA/notes/org-roam")
-  :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-               ("C-c n f" . org-roam-find-file)
-               ("C-c n j" . org-roam-jump-to-index)
-               ("C-c n b" . org-roam-switch-to-buffer)
-               ("C-c n g" . org-roam-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert))))
-;; org-roam-server (for visualising graph as webpage at 127.0.0.1:8080)
-(use-package org-roam-server
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8080
-        org-roam-server-export-inline-images t
-        org-roam-server-authenticate nil
-        org-roam-server-network-poll t
-        org-roam-server-network-arrows nil
-        org-roam-server-network-label-truncate t
-        org-roam-server-network-label-truncate-length 60
-        org-roam-server-network-label-wrap-length 20))
-;; org-roam-bibtex
-(use-package org-roam-bibtex
-  :after org-roam
-  :hook (org-roam-mode . org-roam-bibtex-mode)
-  :config
-  (setq orb-templates '(("r" "ref" plain (function org-roam-capture--get-point) ""
-		       :file-name "${citekey}"
-		       :head "#+TITLE: ${title}\n#+DATE: %<%Y-%m-%d>\n#+ROAM_KEY: ${ref}\n#+ROAM_TAGS: paper\n"
-		       :unnarrowed t))))
-
-;; Deft (for quick searching of notes)
-(use-package deft
-  :after org
-  :bind
-  ("C-c n d" . deft)
-  :custom
-  (deft-recursive t)
-  (deft-use-filter-string-for-filename t)
-  (deft-default-extension "org")
-  (deft-directory "~/MEGA/notes/org-roam/"))
+;; no distractions mode
+(use-package olivetti
+  :bind ("C-c o" . olivetti-mode))
 
 
 
-;; reference management ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; reference management ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ivy-bibtex (use ivy completion framework for searching references)
 (use-package ivy-bibtex
   :config
   (setq bibtex-completion-bibliography '("~/MEGA/gms/library/zotero.bib")
         bibtex-completion-pdf-field "file"
-        bibtex-completion-notes-path "~/MEGA/notes/org-roam"
+        bibtex-completion-notes-path "~/MEGA/notes/papers/"
         bibtex-completion-pdf-open-function  ;; open PDFs with system viewer
 	(lambda (fpath)
 	  (call-process "evince" nil 0 nil fpath))))
@@ -267,8 +188,5 @@
   :config
   (setq reftex-default-bibliography '("~/MEGA/gms/library/zotero.bib")
 	org-ref-default-bibliography '("~/MEGA/gms/library/zotero.bib")
-	org-ref-bibliography-notes "~/MEGA/notes/org-roam/"
-	org-ref-completion-library 'org-ref-ivy-bibtex
-        org-ref-notes-function 'orb-edit-notes))  ; use org-roam-bibtex
-
-
+	org-ref-bibliography-notes "~/MEGA/notes/papers/"
+	org-ref-completion-library 'org-ref-ivy-bibtex))
