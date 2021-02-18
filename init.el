@@ -29,7 +29,9 @@
 (setq initial-scratch-message nil)
 
 ;; left margin
-(set-window-margins nil 2)
+;; (set-window-margins nil 1)
+(setq-default left-margin-width 1 right-margin-width 1)
+(set-window-buffer nil (current-buffer))
 
 ;; borrowed from Nicolas Rougier's EMACS / NANO
 ;; No line breat space points
@@ -168,8 +170,6 @@
   org-hide-emphasis-markers t  ; hide emphasis markers
   org-format-latex-options (plist-put org-format-latex-options :scale 1.5)  ; LaTeX preview: increase font size
   org-archive-location "~/Tresorit/notes/archive.org::* From %s"  ; archive file
-  ;; org-todo-keywords '((sequence "TODO" "NEXT" "|" "DONE"))
-  ;; org-todo-state-tags-triggers '(("NEXT" ("ARCHIVE" . t)))
   ;; org-capture
   org-capture-templates
   '(("r" "Research" entry (file+headline "~/Tresorit/notes/research.org" "Capture")
@@ -210,79 +210,17 @@
   :defer t
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-;; (add-to-list 'tramp-remote-path "/apps/eb/skylake/software/git/2.23.0-GCCcore-8.3.0-nodocs/bin")
 (put 'dired-find-alternate-file 'disabled nil)
 
 ;; flycheck
 (use-package flycheck
-  :ensure t)
-  ;; :init (global-flycheck-mode)
+  :ensure t
+  :init (global-flycheck-mode))
 
 
 
 
 ;; archive ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; variable width font config
-;; (let* ((variable-tuple
-;;         (cond ((x-list-fonts "Noto Serif") '(:font "Noto Serif"))))
-;;        (base-font-color     (face-foreground 'default nil 'default))
-;;        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
-;;   (custom-theme-set-faces
-;;    'user
-;;    '(variable-pitch ((t (:family "Noto Serif" :height 110))))
-;;    '(fixed-pitch ((t ( :family "Source Code Pro" :height 100))))
-;;    '(org-block ((t (:inherit fixed-pitch))))
-;;    '(org-block-begin-line ((t (:inherit fixed-pitch))))
-;;    '(org-block-end-line ((t (:inherit fixed-pitch))))
-;;    '(org-code ((t (:inherit (shadow fixed-pitch)))))
-;;    ;; '(org-document-info ((t (:foreground "dark orange"))))
-;;    ;; '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-;;    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-;;    ;; '(org-link ((t (:foreground "royal blue" :underline t))))
-;;    ;; '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-;;    ;; '(org-property-value ((t (:inherit fixed-pitch))) t)
-;;    ;; '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-;;    ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-;;    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-;;    '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
-;;    ))
-
-;; choose when to use variable-width font smartly
-;; (use-package mixed-pitch
-;;   :hook (text-mode . mixed-pitch-mode))
-
-
-;; highlight matching parentheses
-;; see https://notabug.org/stefano-m/.emacs.d/src/84a0a380d943ebe1627b5f63fb4d5aec681ae81d/init.d/parens.cfg.el
-;; for smartparens-config
-;; (use-package smartparens-config
-;;   :ensure smartparens
-;;   :init
-;;   (add-hook 'minibuffer-setup-hook #'turn-on-smartparens-strict-mode)
-;;   :config
-;;   (show-smartparens-global-mode t)
-;;   (smartparens-global-mode t)
-;;   (sp-use-smartparens-bindings)
-;;   (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
-;;   :diminish smartparens-mode)
- 
-
-;; super-agenda
-;; (use-package org-super-agenda
-;;   :config
-;;   (setq org-super-agenda-groups
-;;        '(;; Each group has an implicit boolean OR operator between its selectors.
-;;          (:name "Today"  ; Optionally specify section name
-;;                 :time-grid t)  ; Items that appear on the time grid 
-;;          (:name "PRS portability project"
-;;                 :tag "PRS")
-;;          (:name "IBD recombination project"
-;;                 :tag "IBD")
-;;          (:name "Admin"
-;;                 :tag "admin")))
-;;   (org-agenda nil "a"))
-
 
 ;; lsp
 ;; (use-package lsp-mode
