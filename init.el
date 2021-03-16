@@ -117,6 +117,8 @@
 ;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; evil mode (vim keybindings)
 (use-package evil
+  :init
+  (setq evil-want-keybinding nil)
   :config (evil-mode 1)
   (setq-default evil-cross-lines t)  ;; cross to previous/next line when at start/end
   ;; behave like normally with visual-line-mode lines
@@ -125,21 +127,27 @@
   (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line))
 
+;; evil bindings for special modes
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
 ;; file tree (toggle with `M-x treemacs`)
 (use-package treemacs
   :bind ("C-c t" . treemacs))
-(use-package treemacs-evil)
+;; (use-package treemacs-evil)
 
 ;; git integration
 (use-package magit
   :bind ("C-x g" . magit-status))
-(use-package evil-magit)
+;; (use-package evil-magit)
 
 ;; which-key (display available shortcuts)
 (use-package which-key
   :config
-  (which-key-mode)
-  (setq which-key-allow-evil-operators t))
+  (which-key-mode))
+;;  (setq which-key-allow-evil-operators t))
 
 ;; set file to store customise options (create it if it doesn't exist)
 (unless (file-exists-p "~/.emacs.d/custom.el")
@@ -216,6 +224,12 @@
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+;; libvterm
+(use-package vterm)
+
+
+
 
 
 
