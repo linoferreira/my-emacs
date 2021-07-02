@@ -1,9 +1,25 @@
+;;; package -- Summary:
+;;; Commentary:
+;;; Code:
+
 ;; package set up ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MELPA repo to download packages from
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+
+;; quelpa
+;; (unless (package-installed-p 'quelpa)
+;;   (with-temp-buffer
+;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;;     (eval-buffer)
+;;     (quelpa-self-upgrade)))
+;; (quelpa
+;;  '(quelpa-use-package
+;;    :fetcher git
+;;    :url "https://github.com/quelpa/quelpa-use-package.git"))
+;; (use-package quelpa-use-package)
 
 ;; use-package to simplify package loading
 (unless (package-installed-p `use-package)
@@ -20,6 +36,7 @@
 ;; aesthetics ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; disable start-up screen
 (setq inhibit-startup-screen t)
+
 ;; disable toolbar, menu bar and scroll bar
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -53,12 +70,18 @@
 
 ;; fonts
 ;; set default font
-(set-frame-font "Source Code Pro-10")
+;; (set-frame-font "Source Code Pro-10")
+(set-frame-font "Roboto Mono-9")
+;; (set-face-attribute 'italic nil :font "Roboto Mono" :slant 'italic)
 ;; set variable-width font
-(set-face-font 'variable-pitch "Source Sans Pro-12")
+(set-face-font 'variable-pitch "Roboto-12")
+;; (set-face-font 'variable-pitch "Source Sans Pro-12")
 
 ;; increase line spacing
-(setq-default line-spacing 0.1)
+(setq-default line-spacing 0.05)
+
+;; highlight current line
+(global-hl-line-mode 1)
 
 ;; icons
 (use-package all-the-icons)
@@ -68,12 +91,12 @@
 ;; theme
 (use-package doom-themes
   :config
-  (load-theme 'doom-solarized-light t)  ; theme
+  (load-theme 'doom-one-light t)  ; theme
   (doom-themes-visual-bell-config)  ; enable flashing mode line on errors
   (setq doom-themes-treemacs-theme "doom-colors")  ; use the colorful treemacs theme
   (doom-themes-treemacs-config)
   (doom-themes-org-config))  ; corrects org-mode's native fontification
- 
+
 ;; mode line
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
@@ -133,11 +156,6 @@
   :config
   (evil-collection-init))
 
-;; file tree (toggle with `M-x treemacs`)
-(use-package treemacs
-  :bind ("C-c t" . treemacs))
-;; (use-package treemacs-evil)
-
 ;; git integration
 (use-package magit
   :bind ("C-x g" . magit-status))
@@ -148,6 +166,17 @@
   :config
   (which-key-mode))
 ;;  (setq which-key-allow-evil-operators t))
+
+;; file tree (toggle with `M-x treemacs`)
+(use-package treemacs
+  :bind ("C-c t" . treemacs))
+;; (use-package treemacs-evil)
+
+;; highlight matching parentheses
+(show-paren-mode 1)
+
+;; enable undo tree
+(global-undo-tree-mode 1)
 
 ;; set file to store customise options (create it if it doesn't exist)
 (unless (file-exists-p "~/.emacs.d/custom.el")
@@ -174,16 +203,20 @@
   ("C-c a" . org-agenda)
   ("C-c c" . org-capture)
   :config
-  (setq org-agenda-files (quote ("~/Tresorit/notes"))  ; org-agenda dirs 
-  org-hide-emphasis-markers t  ; hide emphasis markers
-  org-format-latex-options (plist-put org-format-latex-options :scale 1.5)  ; LaTeX preview: increase font size
-  org-archive-location "~/Tresorit/notes/archive.org::* From %s"  ; archive file
-  ;; org-capture
-  org-capture-templates
-  '(("r" "Research" entry (file+headline "~/Tresorit/notes/research.org" "Capture")
-     "** %U %?\n")
-    ("p" "Personal" entry (file+headline "~/Tresorit/notes/personal.org" "Capture")
-     "** %U %?\n"))))
+  (setq org-agenda-files (quote ("~/Tresorit/notes/" "~/Tresorit/notes/projects/"))  ; org-agenda dirs
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-log-done 'time
+        org-hide-emphasis-markers t  ; hide emphasis markers
+        org-format-latex-options (plist-put org-format-latex-options :scale 1.5)  ; LaTeX preview: increase font size
+        org-archive-location "~/Tresorit/notes/archive.org::* From %s"  ; archive file
+        ;; org-capture
+        org-capture-templates '(("r" "Research" entry (file+headline "~/Tresorit/notes/dphil.org" "Capture")
+                                 "** %U %?\n")
+                                ("p" "Personal" entry (file+headline "~/Tresorit/notes/personal.org" "Capture")
+                                 "** %U %?\n"))))
+
+;; export with pandoc
+(use-package ox-pandoc)
 
 ;; UTF-8 bullet points for org-mode
 (use-package org-bullets
@@ -197,20 +230,24 @@
 ;; reference management
 ;; ivy-bibtex (use ivy completion framework for searching references)
 (use-package ivy-bibtex
+  :bind
+  ("C-c i" . ivy-bibtex)
   :config
   (setq bibtex-completion-bibliography '("~/Tresorit/gms/library/zotero.bib")
         bibtex-completion-pdf-field "file"
-        bibtex-completion-notes-path "~/Tresorit/notes/papers/"
+        bibtex-completion-notes-path "~/Tresorit/notes/papers"
+        ;; bibtex-completion-notes-template-one-file
+        ;; "\n* ${author-or-editor} (${year}): ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :Date of notes: %(org-time-stamp-inactive)\n  :END:"
         bibtex-completion-pdf-open-function  ;; open PDFs with system viewer
-	(lambda (fpath)
-	  (call-process "evince" nil 0 nil fpath))))
+	    (lambda (fpath)
+	      (call-process "evince" nil 0 nil fpath))))
   
 ;; org-ref (easily add references to org files)
 (use-package org-ref
   :config
   (setq reftex-default-bibliography '("~/Tresorit/gms/library/zotero.bib")
 	org-ref-default-bibliography '("~/Tresorit/gms/library/zotero.bib")
-	org-ref-bibliography-notes "~/Tresorit/notes/papers/"
+	org-ref-bibliography-notes "~/Tresorit/notes/papers"
 	org-ref-completion-library 'org-ref-ivy-bibtex))
 
 ;; tramp
@@ -223,7 +260,9 @@
 ;; flycheck
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode))
+  :init
+  (global-flycheck-mode)
+  (setq flycheck-global-modes '(not text-mode org-mode)))
 
 ;; libvterm
 (use-package vterm)
