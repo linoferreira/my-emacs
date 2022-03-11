@@ -9,18 +9,6 @@
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-;; quelpa
-;; (unless (package-installed-p 'quelpa)
-;;   (with-temp-buffer
-;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-;;     (eval-buffer)
-;;     (quelpa-self-upgrade)))
-;; (quelpa
-;;  '(quelpa-use-package
-;;    :fetcher git
-;;    :url "https://github.com/quelpa/quelpa-use-package.git"))
-;; (use-package quelpa-use-package)
-
 ;; use-package to simplify package loading
 (unless (package-installed-p `use-package)
   (package-refresh-contents)
@@ -72,10 +60,10 @@
 ;; set default font
 ;; (set-frame-font "Source Code Pro-10")
 (set-frame-font "Roboto Mono-9")
-;; (set-face-attribute 'italic nil :font "Roboto Mono" :slant 'italic)
+;; (set-face-font 'italic "Roboto Mono Italic")
 ;; set variable-width font
+;; (set-face-font 'variable-pitch "Source Sans Pro-12"
 (set-face-font 'variable-pitch "Roboto-12")
-;; (set-face-font 'variable-pitch "Source Sans Pro-12")
 
 ;; increase line spacing
 (setq-default line-spacing 0.05)
@@ -101,6 +89,10 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :config (setq column-number-mode t))
+
+;; allow scrolling down of top lines
+;; (use-package topspace
+;;   :init (global-topspace-mode 1))
 
 
 
@@ -129,7 +121,8 @@
 
 ;; ivy (general completion of Emacs commands)
 (use-package ivy
-  :init (ivy-mode 1))
+  :init (ivy-mode 1)
+)
 
 ;; avy (jump to any location on page)
 (use-package avy
@@ -176,7 +169,9 @@
 (show-paren-mode 1)
 
 ;; enable undo tree
-(global-undo-tree-mode 1)
+(use-package undo-tree
+  :config
+  (setq global-undo-tree-mode 1))
 
 ;; set file to store customise options (create it if it doesn't exist)
 (unless (file-exists-p "~/.emacs.d/custom.el")
@@ -209,7 +204,6 @@
         org-hide-emphasis-markers t  ; hide emphasis markers
         org-format-latex-options (plist-put org-format-latex-options :scale 1.5)  ; LaTeX preview: increase font size
         org-archive-location "~/Tresorit/notes/archive.org::* From %s"  ; archive file
-        ;; org-capture
         org-capture-templates '(("r" "Research" entry (file+headline "~/Tresorit/notes/dphil.org" "Capture")
                                  "** %U %?\n")
                                 ("p" "Personal" entry (file+headline "~/Tresorit/notes/personal.org" "Capture")
@@ -235,20 +229,26 @@
   :config
   (setq bibtex-completion-bibliography '("~/Tresorit/gms/library/zotero.bib")
         bibtex-completion-pdf-field "file"
-        bibtex-completion-notes-path "~/Tresorit/notes/papers"
-        ;; bibtex-completion-notes-template-one-file
-        ;; "\n* ${author-or-editor} (${year}): ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :Date of notes: %(org-time-stamp-inactive)\n  :END:"
+        bibtex-completion-notes-path "~/Tresorit/notes/papers/notes.org"
+        bibtex-completion-notes-template-one-file
+        "\n* ${author-or-editor} (${year}): ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :Date of notes: %(org-time-stamp-inactive)\n  :END:"
         bibtex-completion-pdf-open-function  ;; open PDFs with system viewer
 	    (lambda (fpath)
 	      (call-process "evince" nil 0 nil fpath))))
   
-;; org-ref (easily add references to org files)
+;; org-ref
 (use-package org-ref
   :config
-  (setq reftex-default-bibliography '("~/Tresorit/gms/library/zotero.bib")
-	org-ref-default-bibliography '("~/Tresorit/gms/library/zotero.bib")
-	org-ref-bibliography-notes "~/Tresorit/notes/papers"
-	org-ref-completion-library 'org-ref-ivy-bibtex))
+  (setq bibtex-completion-bibliography '("~/Tresorit/gms/library/zotero.bib")
+        bibtex-completion-library-path '("~/Tresorit/gms/library/pdfs/")
+	bibtex-completion-notes-path "~/Tresorit/notes/papers/notes.org"))
+
+(require 'org-ref-ivy)
+(setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+      org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+      org-ref-insert-label-function 'org-ref-insert-label-link
+      org-ref-insert-ref-function 'org-ref-insert-ref-link
+      org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
 
 ;; tramp
 (use-package tramp
@@ -266,9 +266,6 @@
 
 ;; libvterm
 (use-package vterm)
-
-
-
 
 
 
